@@ -1,0 +1,62 @@
+<div id="step2" class="card hidden">
+    <h2>Identify Your Texture</h2>
+    <p class="subtitle">Select the pattern that most closely resembles your natural crown.</p>
+    
+    <div class="options-grid">
+        <div class="option-item visual-card" onclick="selectOption(this, '3')">
+            <div class="hair-circle">3</div>
+            <span>Type 3<br><small>Curly/S-Pattern</small></span>
+        </div>
+
+        <div class="option-item visual-card" onclick="selectOption(this, '4ab')">
+            <div class="hair-circle">4A</div>
+            <span>Type 4A/B<br><small>Coily/Z-Pattern</small></span>
+        </div>
+
+        <div class="option-item visual-card" onclick="selectOption(this, '4c')">
+            <div class="hair-circle">4C</div>
+            <span>Type 4C<br><small>Kinky/Tight Coils</small></span>
+        </div>
+    </div>
+    
+    <button class="next-btn" id="btn2" disabled onclick="goToStep(3)">Continue to Scan</button>
+</div>
+
+<style>
+    /* New Styling for Visual Cards */
+    .visual-card {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start !important;
+        text-align: left;
+        gap: 20px;
+    }
+
+    .hair-circle {
+        width: 60px;
+        height: 60px;
+        background: var(--primary);
+        color: var(--accent);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        /* When you have real photos, you'll change this to:
+           background-image: url('your-image.jpg');
+           background-size: cover; 
+        */
+    }
+
+    .visual-card span {
+        line-height: 1.2;
+    }
+
+    .visual-card small {
+        color: #888;
+        font-weight: normal;
+    }
+</style>

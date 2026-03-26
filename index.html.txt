@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrownCare - Natural Hair AI</title>
+    <style>
+        :root {
+            --primary: #5c4033; /* Deep Earthy Brown */
+            --accent: #d4af37;  /* Gold */
+            --bg: #fffcf5;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            background-color: var(--bg);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 25px 10px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 450px;
+            margin: 20px auto;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        h2 { color: var(--primary); margin-top: 0; }
+        
+        /* Input & Button Styles */
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            border: none;
+            background-color: var(--primary);
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover { background-color: #3d2b22; transform: translateY(-2px); }
+
+        /* Component States */
+        .hidden { display: none; }
+        
+        /* Photo Preview Box */
+        #photoPreview { 
+            width: 100%; 
+            height: 250px; 
+            border: 2px dashed #d4af37; 
+            border-radius: 12px; 
+            margin: 15px 0; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden;
+            background: #fafafa;
+        }
+        #photoPreview img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Result Box */
+        .result-card {
+            background: #fdf6e3;
+            padding: 20px;
+            border-left: 5px solid var(--accent);
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .brand-tag {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>CrownCare</h1>
+    <p>Black-Owned Hair Science & AI</p>
+</header>
+
+<div class="container">
+    
+    <div id="authSection">
+        <h2>Create Profile</h2>
+        <p>Save your journey and get expert advice.</p>
+        <input type="email" id="email" placeholder="Email Address">
+        <input type="password" id="pass" placeholder="Password">
+        <button onclick="showApp()">Sign Up</button>
+        <p style="font-size: 0.8rem; text-align: center; color: #666;">By joining, you support Black-owned beauty tech.</p>
+    </div>
+
+    <div id="mainApp" class="hidden">
+        <h2>Hair Analysis</h2>
+        <p>1. Upload a photo of your curls.<br>2. Answer two quick questions.</p>
+
+        <input type="file" id="imageInput" accept="image/*" onchange="previewFile()">
+        <div id="photoPreview">
+            <span id="preText">Camera Preview</span>
+            <img id="userImg" class="hidden">
+        </div>
+
+        <select id="porositySelect">
+            <option value="">Select Porosity</option>
+            <option value="low">Low Porosity (Water beads up)</option>
+            <option value="high">High Porosity (Soaks water fast)</option>
+        </select>
+
+        <button onclick="runAI()">Analyze My Hair</button>
+
+        <div id="results" class="hidden result-card">
+            <h3 id="resTitle" style="margin-top:0;">Your Analysis</h3>
+            <p id="resRoutine"></p>
+            <h4>Recommended Black-Owned Brands:</h4>
+            <div id="brandList"></div>
+            <button onclick="location.reload()" style="background: none; color: var(--primary); text-decoration: underline; font-size: 0.8rem;">Start Over</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // 1. Handle Login Transition
+    function showApp() {
+        const email = document.getElementById('email').value;
+        if(!email.includes('@')) {
+            alert("Please enter a valid email");
+            return;
+        }
+        document.getElementById('authSection').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+    }
+
+    // 2. Handle Image Preview
+    function previewFile() {
+        const preview = document.getElementById('userImg');
+        const file = document.getElementById('imageInput').files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = function () {
+            preview.src = reader.result;
+            preview.classList.remove('hidden');
+            document.getElementById('preText').classList.add('hidden');
+        }
+
+        if (file) { reader.readAsDataURL(file); }
+    }
+
+    // 3. The "AI" Logic & Personalized Routine
+    function runAI() {
+        const porosity = document.getElementById('porositySelect').value;
+        const imgCheck = document.getElementById('imageInput').files[0];
+
+        if (!imgCheck || !porosity) {
+            alert("Please upload a photo and select porosity!");
+            return;
+        }
+
+        // Simulate AI Thinking
+        const btn = document.querySelector('button[onclick="runAI()"]');
+        btn.innerText = "Analyzing Texture Patterns...";
+        
+        setTimeout(() => {
+            btn.classList.add('hidden');
+            const results = document.getElementById('results');
+            const routine = document.getElementById('resRoutine');
+            const brands = document.getElementById('brandList');
+            
+            results.classList.remove('hidden');
+
+            if (porosity === "high") {
+                routine.innerHTML = "<strong>Detected: Type 4 High Porosity.</strong><br>Your cuticles are open. Use the <strong>L.C.O. Method</strong>. Seal with heavy butters to trap moisture.";
+                brands.innerHTML = "<span class='brand-tag'>TGIN</span> <span class='brand-tag'>Camille Rose</span> <span class='brand-tag'>Adwoa Beauty</span>";
+            } else {
+                routine.innerHTML = "<strong>Detected: Type 4 Low Porosity.</strong><br>Your cuticles are tightly closed. Use the <strong>L.O.C. Method</strong>. Apply products with steam or heat to help penetration.";
+                brands.innerHTML = "<span class='brand-tag'>Mielle Organics</span> <span class='brand-tag'>Pattern Beauty</span> <span class='brand-tag'>Melanin Haircare</span>";
+            }
+        }, 2000);
+    }
+</script>
+
+</body>
+</html>

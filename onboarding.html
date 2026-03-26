@@ -1,62 +1,217 @@
-<div id="step2" class="card hidden">
-    <h2>Identify Your Texture</h2>
-    <p class="subtitle">Select the pattern that most closely resembles your natural crown.</p>
-    
-    <div class="options-grid">
-        <div class="option-item visual-card" onclick="selectOption(this, '3')">
-            <div class="hair-circle">3</div>
-            <span>Type 3<br><small>Curly/S-Pattern</small></span>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrownCare | Personalized Hair Journey</title>
+    <style>
+        :root {
+            --primary: #2D241E; /* Deep Espresso */
+            --accent: #D4AF37;  /* Gold */
+            --bg: #F9F7F5;      /* Off-White Cream */
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: var(--primary);
+        }
+
+        /* iRunCoil Style Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: #E0DCD8;
+            position: fixed;
+            top: 0;
+            z-index: 100;
+        }
+        #progressBar {
+            height: 100%;
+            width: 25%;
+            background: var(--accent);
+            transition: width 0.5s ease;
+        }
+
+        .header {
+            padding: 50px 20px 20px;
+            text-align: center;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--white);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+            text-align: center;
+            height: fit-content;
+        }
+
+        h2 { font-size: 1.7rem; margin-bottom: 12px; font-weight: 600; }
+        p.subtitle { color: #777; margin-bottom: 30px; font-size: 1rem; line-height: 1.5; }
+
+        /* Visual Selection Grid */
+        .options-grid {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #EAE8E6;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .option-item:hover { border-color: var(--accent); background: #FAF9F8; }
+        .option-item.selected { border: 2px solid var(--accent); background: #FDFBF0; }
+
+        .hair-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .next-btn {
+            width: 100%;
+            padding: 20px;
+            border-radius: 18px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .next-btn:disabled { opacity: 0.2; cursor: not-allowed; }
+        .hidden { display: none; }
+
+        /* Camera Box */
+        #videoContainer {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 24px;
+            overflow: hidden;
+            background: #000;
+            margin-bottom: 20px;
+        }
+        video { width: 100%; height: 100%; object-fit: cover; }
+    </style>
+</head>
+<body>
+
+    <div class="progress-container"><div id="progressBar"></div></div>
+
+    <div class="header">CrownCare</div>
+
+    <div class="container">
+        <div id="step1" class="card">
+            <h2>Your Best Hair Days Start Here</h2>
+            <p class="subtitle">Experience the first AI-driven hair analysis designed for natural textures.</p>
+            <button class="next-btn" onclick="goToStep(2)">Begin Journey</button>
         </div>
 
-        <div class="option-item visual-card" onclick="selectOption(this, '4ab')">
-            <div class="hair-circle">4A</div>
-            <span>Type 4A/B<br><small>Coily/Z-Pattern</small></span>
+        <div id="step2" class="card hidden">
+            <h2>Select Your Texture</h2>
+            <p class="subtitle">Pick the pattern that looks most like your hair at the root.</p>
+            <div class="options-grid">
+                <div class="option-item" onclick="selectOption(this)">
+                    <div class="hair-icon">3C</div>
+                    <div><strong>Type 3</strong><br><small>Curly S-Pattern</small></div>
+                </div>
+                <div class="option-item" onclick="selectOption(this)">
+                    <div class="hair-icon">4A</div>
+                    <div><strong>Type 4A/B</strong><br><small>Coily Z-Pattern</small></div>
+                </div>
+                <div class="option-item" onclick="selectOption(this)">
+                    <div class="hair-icon">4C</div>
+                    <div><strong>Type 4C</strong><br><small>Kinky/Tight Coils</small></div>
+                </div>
+            </div>
+            <button class="next-btn" id="btn2" disabled onclick="goToStep(3)">Continue</button>
         </div>
 
-        <div class="option-item visual-card" onclick="selectOption(this, '4c')">
-            <div class="hair-circle">4C</div>
-            <span>Type 4C<br><small>Kinky/Tight Coils</small></span>
+        <div id="step3" class="card hidden">
+            <h2>Texture Analysis</h2>
+            <p class="subtitle">Position your crown in the frame to detect porosity and density.</p>
+            <div id="videoContainer"><video id="video" autoplay playsinline></video></div>
+            <button class="next-btn" onclick="runScan()">Analyze Now</button>
+        </div>
+
+        <div id="step4" class="card hidden">
+            <h2 style="color: var(--accent);">Analysis Complete</h2>
+            <p>We detected <strong>Type 4C Texture</strong> with <strong>Low Porosity</strong>.</p>
+            <div style="background: #FDFBF0; padding: 25px; border-radius: 20px; text-align: left; border: 1px solid var(--accent);">
+                <strong style="color: var(--primary);">Expert Advice:</strong><br>
+                Use the L.O.C method. Warm your products slightly to help them penetrate your tightly closed cuticles.
+            </div>
+            <button class="next-btn" style="margin-top: 25px;" onclick="location.reload()">Save My Routine</button>
         </div>
     </div>
-    
-    <button class="next-btn" id="btn2" disabled onclick="goToStep(3)">Continue to Scan</button>
-</div>
 
-<style>
-    /* New Styling for Visual Cards */
-    .visual-card {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start !important;
-        text-align: left;
-        gap: 20px;
-    }
+    <script>
+        let currentStep = 1;
 
-    .hair-circle {
-        width: 60px;
-        height: 60px;
-        background: var(--primary);
-        color: var(--accent);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        font-size: 1.2rem;
-        flex-shrink: 0;
-        /* When you have real photos, you'll change this to:
-           background-image: url('your-image.jpg');
-           background-size: cover; 
-        */
-    }
+        function updateProgress() {
+            document.getElementById('progressBar').style.width = (currentStep / 4 * 100) + "%";
+        }
 
-    .visual-card span {
-        line-height: 1.2;
-    }
+        function goToStep(step) {
+            document.getElementById(`step${currentStep}`).classList.add('hidden');
+            document.getElementById(`step${step}`).classList.remove('hidden');
+            currentStep = step;
+            updateProgress();
+            if(step === 3) startCamera();
+        }
 
-    .visual-card small {
-        color: #888;
-        font-weight: normal;
-    }
-</style>
+        function selectOption(el) {
+            document.querySelectorAll('.option-item').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            document.getElementById('btn2').disabled = false;
+        }
+
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                document.getElementById('video').srcObject = stream;
+            } catch (err) { alert("Please allow camera access for the scan."); }
+        }
+
+        function runScan() {
+            const btn = document.querySelector('#step3 .next-btn');
+            btn.innerText = "Processing Texture...";
+            setTimeout(() => { goToStep(4); }, 2000);
+        }
+    </script>
+</body>
+</html>
